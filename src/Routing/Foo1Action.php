@@ -2,7 +2,7 @@
 
 namespace Runn\Routing;
 
-use Runn\Contracts\Action;
+use Runn\Routing\Interfaces\Action;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

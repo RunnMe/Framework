@@ -1,6 +1,6 @@
 <?php
 
-namespace Runn\Contracts;
+namespace Runn\Routing\Interfaces;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
