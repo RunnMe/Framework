@@ -12,8 +12,10 @@
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "php": ">=7.2",
-    "runn/http": "*"
+    "php": ">=7.4",
+    "runn/http": "*",
+    "symfony/http-foundation": "^5.0",
+    "runn/valueobjects": "^7.4"
   },
   "require-dev": {
     "phpunit/phpunit": "8.*"
