@@ -14,7 +14,6 @@
   "require": {
     "php": ">=7.2",
     "runn/http": "*",
-    "symfony/http-foundation": "^5.0",
     "runn/valueobjects": "*"
   },
   "require-dev": {
