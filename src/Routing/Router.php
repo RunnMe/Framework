@@ -2,10 +2,17 @@
 
 namespace Runn\Routing;
 
-use Symfony\Component\HttpFoundation\Request;
+use Runn\Http\Request;
 
+/**
+ * Router for dispatch sequence of actions by request
+ *
+ * Class Router
+ * @package Runn\Routing
+ */
 class Router
 {
+    /** @var callable[] $routes */
     protected array $routes;
 
     /**
@@ -17,6 +24,12 @@ class Router
         $this->routes = $routes;
     }
 
+    /**
+     * Handle incoming request
+     *
+     * @param Request $request
+     * @return Actions|null
+     */
     public function handle(Request $request): ?Actions
     {
         foreach ($this->routes as $route) {

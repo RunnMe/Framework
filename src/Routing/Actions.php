@@ -5,6 +5,12 @@ namespace Runn\Routing;
 use Runn\Core\TypedCollection;
 use Runn\Routing\Interfaces\Action;
 
+/**
+ * Typed collection of actions
+ *
+ * Class Actions
+ * @package Runn\Routing
+ */
 class Actions extends TypedCollection
 {
     public static function getType()
