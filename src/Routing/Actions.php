@@ -3,7 +3,7 @@
 namespace Runn\Routing;
 
 use Runn\Core\TypedCollection;
-use Runn\Routing\Interfaces\Action;
+use Runn\Routing\Interfaces\ActionInterface;
 
 /**
  * Typed collection of actions
@@ -29,6 +29,6 @@ class Actions extends TypedCollection
             return false;
         }
 
-        return is_subclass_of($value, Action::class);
+        return is_subclass_of($value, ActionInterface::class);
     }
 }
