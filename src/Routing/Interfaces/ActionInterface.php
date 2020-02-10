@@ -11,7 +11,7 @@ use Runn\Http\Response;
  * Interface Action
  * @package Runn\Routing\Interfaces
  */
-interface Action
+interface ActionInterface
 {
     /**
      * @param Request $request
