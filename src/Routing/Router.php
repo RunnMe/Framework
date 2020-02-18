@@ -2,26 +2,51 @@
 
 namespace Runn\Routing;
 
+use Runn\Framework\Actions;
 use Runn\Http\Request;
 
 /**
- * Router for dispatch sequence of actions by request
+ * Default router for dispatch chain of actions by request
  *
  * Class Router
  * @package Runn\Routing
  */
-class Router
+class Router implements RouterInterface
 {
-    /** @var callable[] $routes */
-    protected array $routes;
+
+    /** @var Routes $routes */
+    protected $routes;
 
     /**
      * Router constructor.
-     * @param array $routes
+     *
+     * @param iterable $routes Routes collection
      */
-    public function __construct(array $routes)
+    public function __construct(iterable $routes = [])
     {
-        $this->routes = $routes;
+        $this->routes = new Routes();
+
+        foreach ($routes as $route) {
+            switch (true) {
+                case $route instanceof RouteInterface:
+                    $this->addRoute($route);
+                    break;
+                case $route instanceof \Closure:
+                    $this->addRoute(LambdaRoute::createFromLambda($route));
+                    break;
+            }
+        }
+    }
+
+    /**
+     * Adds route to routes chain
+     *
+     * @param RouteInterface $route
+     * @return mixed
+     */
+    public function addRoute(RouteInterface $route)
+    {
+        $this->routes[] = $route;
     }
 
     /**
@@ -34,12 +59,11 @@ class Router
     {
         foreach ($this->routes as $route) {
             $actions = $route($request);
-
             if (!empty($actions)) {
                 return $actions;
             }
         }
-
         return null;
     }
+
 }

@@ -1,15 +1,15 @@
 <?php
 
-namespace Runn\Routing\Interfaces;
+namespace Runn\Framework;
 
 use Runn\Http\Request;
 use Runn\Http\Response;
 
 /**
- * Base action
+ * Common framework action interface
  *
- * Interface Action
- * @package Runn\Routing\Interfaces
+ * Interface ActionInterface
+ * @package Runn\Framework
  */
 interface ActionInterface
 {
@@ -19,4 +19,5 @@ interface ActionInterface
      * @return Response|null
      */
     public function __invoke(Request $request, Response $response): ?Response;
+
 }

@@ -1,18 +1,18 @@
 <?php
 
-namespace Runn\Routing;
+namespace Runn\Framework;
 
 use Runn\Core\TypedCollection;
-use Runn\Routing\Interfaces\ActionInterface;
 
 /**
- * Typed collection of actions
+ * Typed collection of action classes
  *
  * Class Actions
  * @package Runn\Routing
  */
 class Actions extends TypedCollection
 {
+
     public static function getType()
     {
         return 'string';
@@ -31,4 +31,5 @@ class Actions extends TypedCollection
 
         return is_subclass_of($value, ActionInterface::class);
     }
+
 }
