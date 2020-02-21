@@ -9,10 +9,17 @@ use Runn\Framework\Actions;
 use Runn\Http\Request;
 use Runn\Http\Response;
 
+class testActionReturnsNull implements ActionInterface {
+    public function __invoke(Request $request, Response $response): ?Response
+    {
+        return null;
+    }
+}
+
 class testAction implements ActionInterface {
     public function __invoke(Request $request, Response $response): ?Response
     {
-        return (new Response())->withStatus(0);
+        return (new Response())->withStatus(201);
     }
 }
 
@@ -44,6 +51,64 @@ class ActionsTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Typed collection type mismatch');
         $actions[] = 'foo';
+    }
+
+    public function testInvokeEmpty()
+    {
+        $actions = new Actions();
+
+        $reflector = new \ReflectionClass(Request::class);
+        $request = $reflector->newInstanceWithoutConstructor();
+
+        $this->assertNull($actions($request, new Response()));
+    }
+
+    public function testOneActionReturnsNull()
+    {
+        $actions = new Actions([testActionReturnsNull::class]);
+
+        $reflector = new \ReflectionClass(Request::class);
+        $request = $reflector->newInstanceWithoutConstructor();
+
+        $responce = $actions($request, new Response());
+        $this->assertInstanceOf(Response::class, $responce);
+        $this->assertEquals(200, $responce->getStatusCode());
+    }
+
+    public function testOneAction()
+    {
+        $actions = new Actions([testAction::class]);
+
+        $reflector = new \ReflectionClass(Request::class);
+        $request = $reflector->newInstanceWithoutConstructor();
+
+        $responce = $actions($request, new Response());
+        $this->assertInstanceOf(Response::class, $responce);
+        $this->assertEquals(201, $responce->getStatusCode());
+    }
+
+    public function testActionsChainReturnsNull()
+    {
+        $actions = new Actions([testAction::class, testActionReturnsNull::class]);
+
+        $reflector = new \ReflectionClass(Request::class);
+        $request = $reflector->newInstanceWithoutConstructor();
+
+        $responce = $actions($request, new Response());
+        $this->assertInstanceOf(Response::class, $responce);
+        $this->assertEquals(200, $responce->getStatusCode());
+    }
+
+    public function testActionsChain()
+    {
+        $actions = new Actions([testActionReturnsNull::class, testAction::class]);
+
+        $reflector = new \ReflectionClass(Request::class);
+        $request = $reflector->newInstanceWithoutConstructor();
+
+        $responce = $actions($request, new Response());
+        $this->assertInstanceOf(Response::class, $responce);
+        $this->assertEquals(201, $responce->getStatusCode());
     }
 
 }
