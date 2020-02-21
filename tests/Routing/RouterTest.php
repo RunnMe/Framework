@@ -97,11 +97,48 @@ class RouterTest extends TestCase
                     return null;
                 }
             };
-        $router->addRoute($route);
+        $result = $router->addRoute($route);
 
+        $this->assertSame($router, $result);
         $this->assertInstanceOf(Routes::class, $reflector->getValue($router));
         $this->assertCount(1, $reflector->getValue($router));
         $this->assertSame($route, $reflector->getValue($router)[0]);
+    }
+
+    public function testAddRoutes()
+    {
+        $reflector = new \ReflectionProperty(Router::class, 'routes');
+        $reflector->setAccessible(true);
+
+        $routes = [
+
+            new class implements RouteInterface {
+                public function __invoke(Request $request): ?Actions {
+                    return null;
+                }
+            },
+
+            new LambdaRoute(function (Request $request): ?Actions {
+                return null;
+            }),
+
+            function (Request $request): ?Actions {
+                return null;
+            }
+
+        ];
+
+        $router = new Router();
+        $result = $router->addRoutes($routes);
+
+        $this->assertSame($router, $result);
+        $this->assertInstanceOf(Routes::class, $reflector->getValue($router));
+        $this->assertCount(3, $reflector->getValue($router));
+
+        $this->assertSame($routes[0], $reflector->getValue($router)[0]);
+        $this->assertSame($routes[1], $reflector->getValue($router)[1]);
+
+        $this->assertInstanceOf(LambdaRoute::class, $reflector->getValue($router)[2]);
     }
 
     public function testHandle()

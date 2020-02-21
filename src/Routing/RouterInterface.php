@@ -18,9 +18,17 @@ interface RouterInterface
      * Adds route to routes chain
      *
      * @param RouteInterface $route
-     * @return mixed
+     * @return $this
      */
     public function addRoute(RouteInterface $route);
+
+    /**
+     * Adds routes to routes chain
+     *
+     * @param iterable $routes
+     * @return $this
+     */
+    public function addRoutes(iterable $routes);
 
     /**
      * Handle incoming request

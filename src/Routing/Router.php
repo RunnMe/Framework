@@ -25,7 +25,29 @@ class Router implements RouterInterface
     public function __construct(iterable $routes = [])
     {
         $this->routes = new Routes();
+        $this->addRoutes($routes);
+    }
 
+    /**
+     * Adds route to routes chain
+     *
+     * @param RouteInterface $route
+     * @return $this
+     */
+    public function addRoute(RouteInterface $route)
+    {
+        $this->routes[] = $route;
+        return $this;
+    }
+
+    /**
+     * Adds routes to routes chain
+     *
+     * @param iterable $routes
+     * @return $this
+     */
+    public function addRoutes(iterable $routes)
+    {
         foreach ($routes as $route) {
             switch (true) {
                 case $route instanceof RouteInterface:
@@ -36,17 +58,7 @@ class Router implements RouterInterface
                     break;
             }
         }
-    }
-
-    /**
-     * Adds route to routes chain
-     *
-     * @param RouteInterface $route
-     * @return mixed
-     */
-    public function addRoute(RouteInterface $route)
-    {
-        $this->routes[] = $route;
+        return $this;
     }
 
     /**
