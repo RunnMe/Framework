@@ -1,0 +1,13 @@
+language: php
+php:
+  - '7.2'
+  - '7.3'
+  - '7.4snapshot'
+
+install:
+  - composer install
+
+script: ./vendor/bin/phpunit --configuration ./tests/phpunit.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
