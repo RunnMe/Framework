@@ -7,6 +7,7 @@ use Runn\Core\Config;
 use Runn\Framework\Actions;
 use Runn\Framework\WebApplication;
 use Runn\Http\Request;
+use Runn\Http\RequestInterface;
 use Runn\Routing\LambdaRoute;
 use Runn\Routing\RouteInterface;
 use Runn\Routing\Router;
@@ -21,7 +22,7 @@ class testRouterWithConstruct implements RouterInterface {
     }
     public function addRoute(RouteInterface $route) {}
     public function addRoutes(iterable $routes) {}
-    public function handle(Request $request): ?Actions {}
+    public function handle(RequestInterface $request): ?Actions {}
 }
 
 class WebApplicationRouterTest extends TestCase
@@ -54,7 +55,7 @@ class WebApplicationRouterTest extends TestCase
     {
         $routes = [
             new class implements RouteInterface {
-                public function __invoke(Request $request): ?Actions {
+                public function __invoke(RequestInterface $request): ?Actions {
                     return null;
                 }
             },

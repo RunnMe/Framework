@@ -3,7 +3,7 @@
 namespace Runn\Routing;
 
 use Runn\Framework\Actions;
-use Runn\Http\Request;
+use Runn\Http\RequestInterface;
 
 /**
  * Default router for dispatch chain of actions by request
@@ -15,7 +15,7 @@ class Router implements RouterInterface
 {
 
     /** @var Routes $routes */
-    protected $routes;
+    protected /* @7.4 Routes */$routes;
 
     /**
      * Router constructor.
@@ -64,14 +64,14 @@ class Router implements RouterInterface
     /**
      * Handle incoming request
      *
-     * @param Request $request
+     * @param RequestInterface $request
      * @return Actions|null
      */
-    public function handle(Request $request): ?Actions
+    public function handle(RequestInterface $request): ?Actions
     {
         foreach ($this->routes as $route) {
             $actions = $route($request);
-            if (!empty($actions)) {
+            if (null !== $actions) {
                 return $actions;
             }
         }

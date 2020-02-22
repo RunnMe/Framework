@@ -3,7 +3,7 @@
 namespace Runn\Routing;
 
 use Runn\Framework\Actions;
-use Runn\Http\Request;
+use Runn\Http\RequestInterface;
 
 /**
  * Base interface for routers
@@ -33,9 +33,9 @@ interface RouterInterface
     /**
      * Handle incoming request
      *
-     * @param Request $request
+     * @param RequestInterface $request
      * @return Actions|null
      */
-    public function handle(Request $request): ?Actions;
+    public function handle(RequestInterface $request): ?Actions;
 
 }

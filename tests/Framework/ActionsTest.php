@@ -7,17 +7,19 @@ use Runn\Core\Exception;
 use Runn\Framework\ActionInterface;
 use Runn\Framework\Actions;
 use Runn\Http\Request;
+use Runn\Http\RequestInterface;
 use Runn\Http\Response;
+use Runn\Http\ResponseInterface;
 
 class testActionReturnsNull implements ActionInterface {
-    public function __invoke(Request $request, Response $response): ?Response
+    public function __invoke(RequestInterface $request, ResponseInterface $response): ?ResponseInterface
     {
         return null;
     }
 }
 
 class testAction implements ActionInterface {
-    public function __invoke(Request $request, Response $response): ?Response
+    public function __invoke(RequestInterface $request, ResponseInterface $response): ?ResponseInterface
     {
         return (new Response())->withStatus(201);
     }

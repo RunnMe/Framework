@@ -3,7 +3,7 @@
 namespace Runn\Routing;
 
 use Runn\Framework\Actions;
-use Runn\Http\Request;
+use Runn\Http\RequestInterface;
 
 /**
  * Default lambda-based route class
@@ -36,10 +36,10 @@ class LambdaRoute implements RouteInterface
     }
 
     /**
-     * @param Request $request
+     * @param RequestInterface $request
      * @return Actions|null
      */
-    public function __invoke(Request $request): ?Actions
+    public function __invoke(RequestInterface $request): ?Actions
     {
         return ($this->lambda)($request);
     }

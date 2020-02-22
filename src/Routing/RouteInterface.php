@@ -3,7 +3,7 @@
 namespace Runn\Routing;
 
 use Runn\Framework\Actions;
-use Runn\Http\Request;
+use Runn\Http\RequestInterface;
 
 /**
  * Base interface for routes: routing rules
@@ -15,9 +15,9 @@ interface RouteInterface
 {
 
     /**
-     * @param Request $request
+     * @param RequestInterface $request
      * @return Actions|null
      */
-    public function __invoke(Request $request): ?Actions;
+    public function __invoke(RequestInterface $request): ?Actions;
 
 }

@@ -6,28 +6,30 @@ use PHPUnit\Framework\TestCase;
 use Runn\Framework\ActionInterface;
 use Runn\Framework\Actions;
 use Runn\Http\Request;
+use Runn\Http\RequestInterface;
 use Runn\Http\Response;
+use Runn\Http\ResponseInterface;
 use Runn\Routing\LambdaRoute;
 use Runn\Routing\RouteInterface;
 use Runn\Routing\Router;
 use Runn\Routing\Routes;
 
 class testAction1 implements ActionInterface {
-    public function __invoke(Request $request, Response $response): ?Response
+    public function __invoke(RequestInterface $request, ResponseInterface $response): ?ResponseInterface
     {
         return (new Response())->withStatus(1);
     }
 }
 
 class testAction2 implements ActionInterface {
-    public function __invoke(Request $request, Response $response): ?Response
+    public function __invoke(RequestInterface $request, ResponseInterface $response): ?ResponseInterface
     {
         return (new Response())->withStatus(2);
     }
 }
 
 class testAction3 implements ActionInterface {
-    public function __invoke(Request $request, Response $response): ?Response
+    public function __invoke(RequestInterface $request, ResponseInterface $response): ?ResponseInterface
     {
         return (new Response())->withStatus(3);
     }
@@ -55,7 +57,7 @@ class RouterTest extends TestCase
         $routes = [
 
             new class implements RouteInterface {
-                public function __invoke(Request $request): ?Actions {
+                public function __invoke(RequestInterface $request): ?Actions {
                     return null;
                 }
             },
@@ -93,7 +95,7 @@ class RouterTest extends TestCase
 
         $route =
             new class implements RouteInterface {
-                public function __invoke(Request $request): ?Actions {
+                public function __invoke(RequestInterface $request): ?Actions {
                     return null;
                 }
             };
@@ -113,7 +115,7 @@ class RouterTest extends TestCase
         $routes = [
 
             new class implements RouteInterface {
-                public function __invoke(Request $request): ?Actions {
+                public function __invoke(RequestInterface $request): ?Actions {
                     return null;
                 }
             },

@@ -9,6 +9,12 @@ use Runn\Core\InstanceableByConfigInterface;
 use Runn\Di\ContainerInterface;
 use Runn\Routing\RouterInterface;
 
+/**
+ * Default web-application class
+ *
+ * Class WebApplication
+ * @package Runn\Framework
+ */
 class WebApplication implements ConfigAwareInterface, InstanceableByConfigInterface
 {
 
@@ -23,18 +29,30 @@ class WebApplication implements ConfigAwareInterface, InstanceableByConfigInterf
     /**
      * @param \Runn\Core\Config|null $config
      * @return static
+     * @throws Exception
      */
     public static function instance(Config $config = null)
     {
         return new static($config ?? new Config());
     }
 
+    /**
+     * WebApplication constructor.
+     *
+     * @param Config $config
+     * @throws Exception
+     */
     protected function __construct(Config $config)
     {
         $this->setConfig($config);
         $this->init();
     }
 
+    /**
+     * Prior services initialization
+     *
+     * @throws Exception
+     */
     protected function init()
     {
         if ( !empty($this->config->container) && !empty($this->config->container->class) ) {
@@ -52,6 +70,12 @@ class WebApplication implements ConfigAwareInterface, InstanceableByConfigInterf
         }
     }
 
+    /**
+     * Services container initialization
+     *
+     * @param Config $config
+     * @return ContainerInterface
+     */
     protected function initContainer(Config $config): ContainerInterface
     {
         $config = clone $config;
@@ -61,6 +85,12 @@ class WebApplication implements ConfigAwareInterface, InstanceableByConfigInterf
         return new $class($config);
     }
 
+    /**
+     * Router initialization
+     *
+     * @param Config $config
+     * @return RouterInterface
+     */
     protected function initRouter(Config $config): RouterInterface
     {
         $config = clone $config;
@@ -77,21 +107,33 @@ class WebApplication implements ConfigAwareInterface, InstanceableByConfigInterf
         return $router;
     }
 
+    /**
+     * @return bool
+     */
     public function hasContainer(): bool
     {
         return !empty($this->container);
     }
 
+    /**
+     * @return ContainerInterface|null
+     */
     public function getContainer(): ?ContainerInterface
     {
         return $this->hasContainer() ? $this->container : null;
     }
 
+    /**
+     * @return bool
+     */
     public function hasRouter(): bool
     {
         return !empty($this->router);
     }
 
+    /**
+     * @return RouterInterface|null
+     */
     public function getRouter(): ?RouterInterface
     {
         return $this->hasRouter() ? $this->router : null;

@@ -3,8 +3,9 @@
 namespace Runn\Framework;
 
 use Runn\Core\TypedCollection;
-use Runn\Http\Request;
+use Runn\Http\RequestInterface;
 use Runn\Http\Response;
+use Runn\Http\ResponseInterface;
 
 /**
  * Typed collection of action classes
@@ -35,11 +36,11 @@ class Actions extends TypedCollection implements ActionInterface
     }
 
     /**
-     * @param Request $request
-     * @param Response $response
-     * @return Response|null
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface|null
      */
-    public function __invoke(Request $request, Response $response): ?Response
+    public function __invoke(RequestInterface $request, ResponseInterface $response): ?ResponseInterface
     {
         if ($this->empty()) {
             return null;

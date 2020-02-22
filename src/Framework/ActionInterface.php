@@ -2,8 +2,8 @@
 
 namespace Runn\Framework;
 
-use Runn\Http\Request;
-use Runn\Http\Response;
+use Runn\Http\RequestInterface;
+use Runn\Http\ResponseInterface;
 
 /**
  * Common framework action interface
@@ -14,10 +14,10 @@ use Runn\Http\Response;
 interface ActionInterface
 {
     /**
-     * @param Request $request
-     * @param Response $response
-     * @return Response|null
+     * @param RequestInterface $request
+     * @param ResponseInterface $response
+     * @return ResponseInterface|null
      */
-    public function __invoke(Request $request, Response $response): ?Response;
+    public function __invoke(RequestInterface $request, ResponseInterface $response): ?ResponseInterface;
 
 }
