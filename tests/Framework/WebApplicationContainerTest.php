@@ -11,8 +11,7 @@ use Runn\Framework\WebApplication;
 
 class testContainerWithConstruct implements ContainerInterface {
     use ContainerTrait;
-    public function __construct(Config $config)
-    {
+    public function __construct(Config $config) {
         foreach ($config as $key => $val) {
             echo $key . '=>' . $val;
         }

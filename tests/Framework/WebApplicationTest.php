@@ -41,4 +41,26 @@ class WebApplicationTest extends TestCase
         $app = WebApplication::instance(new Config(['container' => ['class' => \stdClass::class]]));
     }
 
+    public function testWithoutRouter()
+    {
+        $app = WebApplication::instance(new Config());
+        $this->assertFalse($app->hasRouter());
+        $this->assertNull($app->getRouter());
+
+        $app = WebApplication::instance(new Config(['router' => 'foo']));
+        $this->assertFalse($app->hasRouter());
+        $this->assertNull($app->getRouter());
+
+        $app = WebApplication::instance(new Config(['router' => ['class' => '']]));
+        $this->assertFalse($app->hasRouter());
+        $this->assertNull($app->getRouter());
+    }
+
+    public function testInvalidRouter()
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('Invalid router class: ' . \stdClass::class);
+        $app = WebApplication::instance(new Config(['router' => ['class' => \stdClass::class]]));
+    }
+
 }

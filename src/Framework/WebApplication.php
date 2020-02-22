@@ -48,7 +48,7 @@ class WebApplication implements ConfigAwareInterface, InstanceableByConfigInterf
             if ( !is_subclass_of($this->config->router->class, RouterInterface::class) ) {
                 throw new Exception('Invalid router class: ' . $this->config->router->class);
             }
-            $this->router = $this->initRouter($this->router->container);
+            $this->router = $this->initRouter($this->config->router);
         }
     }
 
