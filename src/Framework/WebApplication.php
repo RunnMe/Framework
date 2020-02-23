@@ -6,6 +6,8 @@ use Runn\Core\Config;
 use Runn\Core\ConfigAwareInterface;
 use Runn\Core\ConfigAwareTrait;
 use Runn\Core\InstanceableByConfigInterface;
+use Runn\Core\SingletonInterface;
+use Runn\Core\SingletonTrait;
 use Runn\Di\ContainerInterface;
 use Runn\Routing\RouterInterface;
 
@@ -15,26 +17,20 @@ use Runn\Routing\RouterInterface;
  * Class WebApplication
  * @package Runn\Framework
  */
-class WebApplication implements ConfigAwareInterface, InstanceableByConfigInterface
+class WebApplication implements ConfigAwareInterface, SingletonInterface, InstanceableByConfigInterface
 {
 
     use ConfigAwareTrait;
+    use SingletonTrait;
+
+    /** @var static */
+    protected static $instance = null;
 
     /** @var ContainerInterface */
     protected $container;
 
     /** @var RouterInterface */
     protected $router;
-
-    /**
-     * @param \Runn\Core\Config|null $config
-     * @return static
-     * @throws Exception
-     */
-    public static function instance(Config $config = null)
-    {
-        return new static($config ?? new Config());
-    }
 
     /**
      * WebApplication constructor.
@@ -46,6 +42,22 @@ class WebApplication implements ConfigAwareInterface, InstanceableByConfigInterf
     {
         $this->setConfig($config);
         $this->init();
+    }
+
+    /**
+     * @param \Runn\Core\Config|null $config
+     * @return static
+     * @throws Exception
+     */
+    public static function instance(Config $config = null)
+    {
+        if (null === static::$instance) {
+            static::$instance = new static($config ?? new Config());
+            if (!function_exists( 'app')) {
+                eval("function app() {return \\" . get_called_class() . "::instance(); }");
+            }
+        }
+        return static::$instance;
     }
 
     /**

@@ -28,20 +28,33 @@ class testRouterWithConstruct implements RouterInterface {
 class WebApplicationRouterTest extends TestCase
 {
 
+    protected function destroySingletonInstance(string $class)
+    {
+        $reflector = new \ReflectionProperty($class, 'instance');
+        $reflector->setAccessible(true);
+        $reflector->setValue(null);
+        $reflector->setAccessible(false);
+    }
+
     public function testDefaultRouter()
     {
+        $this->destroySingletonInstance(WebApplication::class);
         $app = WebApplication::instance(new Config(['router' => ['class' => Router::class]]));
+
         $this->assertTrue($app->hasRouter());
         $this->assertEquals(new Router(), $app->getRouter());
     }
 
     public function testRouterWithConstruct()
     {
+        $this->destroySingletonInstance(WebApplication::class);
         $app = WebApplication::instance(new Config(['router' => ['class' => testRouterWithConstruct::class]]));
+
         $this->assertTrue($app->hasRouter());
         $this->assertEquals(new testRouterWithConstruct(new Config()), $app->getRouter());
 
         $this->expectOutputString('foo=>barbaz=>42foo=>barbaz=>42');
+        $this->destroySingletonInstance(WebApplication::class);
         $app = WebApplication::instance(new Config(['router' => [
             'class' => testRouterWithConstruct::class,
             'foo' => 'bar',
@@ -51,7 +64,7 @@ class WebApplicationRouterTest extends TestCase
         $this->assertEquals(new testRouterWithConstruct(new Config(['foo' => 'bar', 'baz' => 42])), $app->getRouter());
     }
 
-    public function testRoterWithRoutes()
+    public function testRouterWithRoutes()
     {
         $routes = [
             new class implements RouteInterface {
@@ -65,6 +78,7 @@ class WebApplicationRouterTest extends TestCase
             }),
         ];
 
+        $this->destroySingletonInstance(WebApplication::class);
         $app = WebApplication::instance(new Config([
             'router' => [
                 'class' => Router::class,

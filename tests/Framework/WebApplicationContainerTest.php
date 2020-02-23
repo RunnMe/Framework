@@ -21,20 +21,33 @@ class testContainerWithConstruct implements ContainerInterface {
 class WebApplicationContainerTest extends TestCase
 {
 
+    protected function destroySingletonInstance(string $class)
+    {
+        $reflector = new \ReflectionProperty($class, 'instance');
+        $reflector->setAccessible(true);
+        $reflector->setValue(null);
+        $reflector->setAccessible(false);
+    }
+
     public function testDefaultContainer()
     {
+        $this->destroySingletonInstance(WebApplication::class);
         $app = WebApplication::instance(new Config(['container' => ['class' => Container::class]]));
+
         $this->assertTrue($app->hasContainer());
         $this->assertEquals(new Container(), $app->getContainer());
     }
 
     public function testContainerWithConstruct()
     {
+        $this->destroySingletonInstance(WebApplication::class);
         $app = WebApplication::instance(new Config(['container' => ['class' => testContainerWithConstruct::class]]));
+
         $this->assertTrue($app->hasContainer());
         $this->assertEquals(new testContainerWithConstruct(new Config()), $app->getContainer());
 
         $this->expectOutputString('foo=>barbaz=>42foo=>barbaz=>42');
+        $this->destroySingletonInstance(WebApplication::class);
         $app = WebApplication::instance(new Config(['container' => [
             'class' => testContainerWithConstruct::class,
             'foo' => 'bar',
