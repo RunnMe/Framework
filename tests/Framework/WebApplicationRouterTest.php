@@ -4,6 +4,7 @@ namespace Runn\tests\Framework\WebApplication;
 
 use PHPUnit\Framework\TestCase;
 use Runn\Core\Config;
+use Runn\Di\Container;
 use Runn\Framework\Actions;
 use Runn\Framework\WebApplication;
 use Runn\Http\Request;
@@ -25,6 +26,21 @@ class testRouterWithConstruct implements RouterInterface {
     public function handle(RequestInterface $request): ?Actions {}
 }
 
+class testSpecialContainerWithRouter extends Container {
+    public function __construct()
+    {
+        $router = $this->getTestRouter();
+        $this->set(RouterInterface::class, static function () use ($router) {return $router;});
+    }
+    public function getTestRouter() {
+        static $router = null;
+        if (null === $router) {
+            $router = new Router();
+        }
+        return $router;
+    }
+}
+
 class WebApplicationRouterTest extends TestCase
 {
 
@@ -34,6 +50,16 @@ class WebApplicationRouterTest extends TestCase
         $reflector->setAccessible(true);
         $reflector->setValue(null);
         $reflector->setAccessible(false);
+    }
+
+    public function testRouterViaContainer()
+    {
+        $this->destroySingletonInstance(WebApplication::class);
+        $app = WebApplication::instance(new Config([
+            'container' => ['class' => testSpecialContainerWithRouter::class]
+        ]));
+        $this->assertTrue($app->hasRouter());
+        $this->assertSame($app->getContainer()->getTestRouter(), $app->getRouter());
     }
 
     public function testDefaultRouter()
