@@ -110,3 +110,27 @@ if (null === $actions) {
 
 $response->send();
 ```
+
+Шаг 5. Код действия.
+--------------------
+
+Ну что же, осталось написать собственно код действия - код, который примет запрос и сформирует ответ.
+
+```php
+namespace App\Actions;
+
+use Runn\Http\RequestInterface;
+use Runn\Framework\ActionInterface;
+use Runn\Http\ResponseInterface;
+
+class IndexAction implements ActionInterface
+{
+    public function __invoke(RequestInterface $request, ResponseInterface $response): ?ResponseInterface
+    {
+        $response->getBody()->write('Hello, world!');
+        return $response;
+    }
+}
+```
+
+Готово! Веб-приложение можно запускать.
