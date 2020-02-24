@@ -1,6 +1,6 @@
 <?php
 
-namespace Runn\tests\Framework\Routing\Route;
+namespace Runn\tests\Routing\Route;
 
 use PHPUnit\Framework\TestCase;
 use Runn\Html\Form\Fields\BooleanField;
