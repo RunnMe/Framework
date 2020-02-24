@@ -60,3 +60,53 @@ return [
 
 ];
 ```
+
+Таким образом мы определили, что запрос на отображение главной страницы нашего сайта будет
+обрабатываться действием `IndexAction` - единственным в цепочке действий.
+
+Шаг 3. Создание объекта приложения.
+-----------------------------------
+
+Давайте создадим объект веб-приложения!
+
+index.php:
+```php
+use Runn\Core\Config;
+use Runn\Framework\WebApplication;
+use Runn\Fs\Files\PhpFile;
+
+$config = new Config(
+    new PhpFile('config.db') // Укажите тут путь к конфигу
+);
+$app = WebApplication::instance($config);
+```
+
+Шаг 4. Роутер и запуск действий.
+--------------------------------
+
+Теперь запустим роутер, передадим ему запрос от клиента и узнаем, какие действия будут предприняты в ответ на запрос:
+
+```php
+use Runn\Http\Request;
+
+$request = Request::constructFromGlobals();
+$router = $app->getRouter();
+$actions = $router->handle($request);
+```
+
+Далее нам нужно подготовить пустой ответ, а затем, в зависимости от того, сумел ли роутер определить список действий, либо
+модифицировать этот ответ кодом 404, либо передать его действиям для их работы. Ну и последним шагом - отправить ответ клиенту.
+
+```php
+use Runn\Http\Response;
+
+$response = new Response();
+
+if (null === $actions) {
+    $response = $response->withStatus(404);
+} else {
+    $response = $actions($request, $response) ?? $response;
+}
+
+$response->send();
+```
