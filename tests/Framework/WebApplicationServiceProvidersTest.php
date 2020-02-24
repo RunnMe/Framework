@@ -13,7 +13,7 @@ use Runn\Framework\WebApplication;
 class testServiceProvider1 extends ServiceProvider {
     public function register(ContainerInterface $container)
     {
-        $container->set('foo', function () {return 'bar';});
+        $container->set('foo', static function () {return 'bar';});
     }
 }
 

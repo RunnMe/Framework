@@ -41,6 +41,19 @@ class WebApplication implements ConfigAwareInterface, SingletonInterface, Instan
     protected function __construct(Config $config)
     {
         $this->setConfig($config);
+
+        if ( !empty($this->config->container) && !empty($this->config->container->class) ) {
+            if ( !is_subclass_of($this->config->container->class, ContainerInterface::class) ) {
+                throw new Exception('Invalid container class: ' . $this->config->container->class);
+            }
+            $this->container = $this->initContainer($this->config->container);
+        }
+
+        static::$instance = $this;
+        if (!function_exists( 'app')) {
+            eval("function app() {return \\" . get_called_class() . "::instance(); }");
+        }
+
         $this->init();
     }
 
@@ -53,9 +66,6 @@ class WebApplication implements ConfigAwareInterface, SingletonInterface, Instan
     {
         if (null === static::$instance) {
             static::$instance = new static($config ?? new Config());
-            if (!function_exists( 'app')) {
-                eval("function app() {return \\" . get_called_class() . "::instance(); }");
-            }
         }
         return static::$instance;
     }
@@ -67,18 +77,19 @@ class WebApplication implements ConfigAwareInterface, SingletonInterface, Instan
      */
     protected function init()
     {
-        if ( !empty($this->config->container) && !empty($this->config->container->class) ) {
-            if ( !is_subclass_of($this->config->container->class, ContainerInterface::class) ) {
-                throw new Exception('Invalid container class: ' . $this->config->container->class);
-            }
-            $this->container = $this->initContainer($this->config->container);
+        if ($this->hasContainer() && !empty($this->config->providers)) {
+            $this->initProviders($this->config->providers);
         }
 
-        if ( !empty($this->config->router) && !empty($this->config->router->class) ) {
-            if ( !is_subclass_of($this->config->router->class, RouterInterface::class) ) {
-                throw new Exception('Invalid router class: ' . $this->config->router->class);
+        if ($this->hasContainer() && $this->getContainer()->has(RouterInterface::class)) {
+            $this->router = $this->getContainer()->get(RouterInterface::class);
+        } else {
+            if ( !empty($this->config->router) && !empty($this->config->router->class) ) {
+                if (!is_subclass_of($this->config->router->class, RouterInterface::class)) {
+                    throw new Exception('Invalid router class: ' . $this->config->router->class);
+                }
+                $this->router = $this->initRouter($this->config->router);
             }
-            $this->router = $this->initRouter($this->config->router);
         }
     }
 
@@ -95,6 +106,21 @@ class WebApplication implements ConfigAwareInterface, SingletonInterface, Instan
         unset($config->class);
 
         return new $class($config);
+    }
+
+    /**
+     * Service providers initialization
+     *
+     * @param Config $config
+     */
+    protected function initProviders(Config $config): void
+    {
+        foreach ($config as $class) {
+            if (is_string($class) && is_subclass_of($class, ServiceProvider::class)) {
+                $provider = new $class;
+                $provider->register($this->getContainer());
+            }
+        }
     }
 
     /**
