@@ -1,4 +1,4 @@
-Библиотека Runn Me! DBAL Library
+Библиотека Runn Me! Framework
 ================================
 
 1. [Быстрый старт](./getting-started.md)
