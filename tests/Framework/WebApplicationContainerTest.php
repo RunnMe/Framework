@@ -4,7 +4,9 @@ namespace Runn\tests\Framework\WebApplication;
 
 use PHPUnit\Framework\TestCase;
 use Runn\Core\Config;
+use Runn\Core\Std;
 use Runn\Di\Container;
+use Runn\Di\ContainerEntryNotFoundException;
 use Runn\Di\ContainerInterface;
 use Runn\Di\ContainerTrait;
 use Runn\Framework\WebApplication;
@@ -55,6 +57,31 @@ class WebApplicationContainerTest extends TestCase
         ]]));
         $this->assertTrue($app->hasContainer());
         $this->assertEquals(new testContainerWithConstruct(new Config(['foo' => 'bar', 'baz' => 42])), $app->getContainer());
+    }
+
+    public function testContainerMagicNotFoundException()
+    {
+        $this->destroySingletonInstance(WebApplication::class);
+        $app = WebApplication::instance(new Config(['container' => ['class' => Container::class]]));
+
+        $this->assertFalse(isset($app->service));
+
+        $this->expectException(ContainerEntryNotFoundException::class);
+        $app->service;
+    }
+
+    public function testContainerMagic()
+    {
+        $this->destroySingletonInstance(WebApplication::class);
+        $app = WebApplication::instance(new Config(['container' => ['class' => Container::class]]));
+
+        $this->assertFalse(isset($app->service));
+
+        $service = new Std(['foo' => 'bar']);
+        $app->getContainer()->set('service', function () use ($service) { return $service; } );
+
+        $this->assertTrue(isset($app->service));
+        $this->assertSame($service, $app->service);
     }
 
 }

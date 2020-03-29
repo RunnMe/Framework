@@ -36,18 +36,24 @@ class WebApplicationTest extends TestCase
 
         $this->assertFalse($app->hasContainer());
         $this->assertNull($app->getContainer());
+        $this->assertFalse(isset($app->service));
+        $this->assertNull($app->service);
 
         $this->destroySingletonInstance(WebApplication::class);
         $app = WebApplication::instance(new Config(['container' => 'foo']));
 
         $this->assertFalse($app->hasContainer());
         $this->assertNull($app->getContainer());
+        $this->assertFalse(isset($app->service));
+        $this->assertNull($app->service);
 
         $this->destroySingletonInstance(WebApplication::class);
         $app = WebApplication::instance(new Config(['container' => ['class' => '']]));
 
         $this->assertFalse($app->hasContainer());
         $this->assertNull($app->getContainer());
+        $this->assertFalse(isset($app->service));
+        $this->assertNull($app->service);
     }
 
     public function testInvalidContainer()

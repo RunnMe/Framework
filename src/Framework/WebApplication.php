@@ -177,4 +177,28 @@ class WebApplication implements ConfigAwareInterface, SingletonInterface, Instan
         return $this->hasRouter() ? $this->router : null;
     }
 
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function __isset($name): bool
+    {
+        if (!$this->hasContainer()) {
+            return false;
+        }
+        return $this->getContainer()->has($name);
+    }
+
+    /**
+     * @param $name
+     * @return mixed|null
+     */
+    public function __get($name)
+    {
+        if (!$this->hasContainer()) {
+            return null;
+        }
+        return $this->getContainer()->get($name);
+    }
+
 }
