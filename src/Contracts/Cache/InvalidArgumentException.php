@@ -9,9 +9,4 @@ namespace Runn\Contracts\Cache;
 interface InvalidArgumentException extends CacheException
 {
 
-    /**
-     * @return mixed
-     */
-    public function getArgumentValue();
-
 }
