@@ -6,10 +6,10 @@
 
     <testsuites>
         <testsuite name="Framework">
-            <directory phpVersionOperator=">=" phpVersion="7.3">Framework</directory>
+            <directory phpVersionOperator=">=" phpVersion="7.4">Framework</directory>
         </testsuite>
         <testsuite name="Routing">
-            <directory phpVersionOperator=">=" phpVersion="7.3">Routing</directory>
+            <directory phpVersionOperator=">=" phpVersion="7.4">Routing</directory>
         </testsuite>
     </testsuites>
 
