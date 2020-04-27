@@ -17,7 +17,8 @@
     "runn/core": "dev-master",
     "runn/http": "dev-master",
     "runn/fs": "dev-master",
-    "runn/serialization": "dev-master"
+    "runn/serialization": "dev-master",
+    "symfony/dotenv": "^5.0"
   },
   "require-dev": {
     "phpunit/phpunit": "8.*"
@@ -25,6 +26,9 @@
   "autoload": {
     "psr-4": {
       "Runn\\": "src/"
-    }
+    },
+    "files": [
+      "src/functions.php"
+    ]
   }
 }
