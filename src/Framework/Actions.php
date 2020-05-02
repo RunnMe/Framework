@@ -47,7 +47,11 @@ class Actions extends TypedCollection implements ActionInterface
         }
         foreach ($this as $actionClass) {
             /** @var ActionInterface $actionInstance */
-            $actionInstance = new $actionClass;
+            if (function_exists('app') && app()->hasContainer()) {
+                $actionInstance = app()->getContainer()->resolve($actionClass);
+            } else {
+                $actionInstance = new $actionClass;
+            }
             $response = $actionInstance($request, $response) ?? new Response();
         }
         return $response;
