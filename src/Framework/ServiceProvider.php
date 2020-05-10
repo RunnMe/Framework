@@ -14,6 +14,7 @@ abstract class ServiceProvider implements ServiceProviderInterface
 {
     /**
      * @var WebApplication
+     * @todo 7.4 type hint
      */
     protected $app;
 
