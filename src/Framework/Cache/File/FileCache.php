@@ -17,17 +17,17 @@ class FileCache implements CacheInterface, SerializerAwareInterface
     /**
      * @var Dir
      */
-    protected /* @7.4 Dir */$dir;
+    protected Dir $dir;
 
     /**
      * @var FilenameStrategyInterface
      */
-    protected /* @7.4 FilenameStrategyInterface */$strategy;
+    protected FilenameStrategyInterface $strategy;
 
     /**
      * @var SerializerInterface
      */
-    protected /* @7.4 SerializerInterface */$serializer;
+    protected SerializerInterface $serializer;
 
     /**
      * FileCache constructor.

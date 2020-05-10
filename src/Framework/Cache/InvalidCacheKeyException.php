@@ -5,7 +5,7 @@ namespace Runn\Framework\Cache;
 class InvalidCacheKeyException extends \Runn\Framework\Exception implements \Runn\Contracts\Cache\InvalidArgumentException
 {
 
-    protected /* @7.4 string */$key;
+    protected string $key;
 
     public function __construct(string $key, $message = "", $code = 0, \Throwable $previous = null)
     {

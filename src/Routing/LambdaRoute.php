@@ -15,7 +15,7 @@ class LambdaRoute implements RouteInterface
 {
 
     /** @var \Closure */
-    protected /* @7.4 \Closure */$lambda;
+    protected \Closure $lambda;
 
     /**
      * Route constructor.

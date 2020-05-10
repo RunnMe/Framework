@@ -27,10 +27,10 @@ class WebApplication implements ConfigAwareInterface, SingletonInterface, Instan
     protected static $instance = null;
 
     /** @var ContainerInterface */
-    protected /* @7.4 ContainerInterface */$container;
+    protected ContainerInterface $container;
 
     /** @var RouterInterface */
-    protected /* @7.4 RouterInterface */$router;
+    protected RouterInterface $router;
 
     /**
      * WebApplication constructor.

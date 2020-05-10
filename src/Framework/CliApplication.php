@@ -26,7 +26,7 @@ class CliApplication implements ConfigAwareInterface, SingletonInterface, Instan
     protected static $instance = null;
 
     /** @var ContainerInterface */
-    protected /* @7.4 ContainerInterface */$container;
+    protected ContainerInterface $container;
 
     /**
      * CliApplication constructor.
