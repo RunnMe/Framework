@@ -16,12 +16,12 @@ abstract class Action implements ActionInterface
     /**
      * @var RequestInterface
      */
-    protected /* @7.4 RequestInterface */$request;
+    protected RequestInterface $request;
 
     /**
      * @var ResponseInterface
      */
-    protected /* @7.4 ResponseInterface */$response;
+    protected ResponseInterface $response;
 
     /**
      * @return ResponseInterface|null

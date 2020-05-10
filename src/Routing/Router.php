@@ -15,7 +15,7 @@ class Router implements RouterInterface
 {
 
     /** @var Routes $routes */
-    protected /* @7.4 Routes */$routes;
+    protected Routes $routes;
 
     /**
      * Router constructor.
