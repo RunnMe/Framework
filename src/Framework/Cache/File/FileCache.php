@@ -25,11 +25,6 @@ class FileCache implements CacheInterface, SerializerAwareInterface
     protected FilenameStrategyInterface $strategy;
 
     /**
-     * @var SerializerInterface
-     */
-    protected SerializerInterface $serializer;
-
-    /**
      * FileCache constructor.
      * @param FilenameStrategyInterface|null $strategy
      */
