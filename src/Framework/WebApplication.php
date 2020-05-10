@@ -198,7 +198,7 @@ class WebApplication implements ConfigAwareInterface, SingletonInterface, Instan
         if (!$this->hasContainer()) {
             return null;
         }
-        return $this->getContainer()->get($name);
+        return $this->getContainer()->resolve($name);
     }
 
 }
