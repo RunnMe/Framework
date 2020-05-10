@@ -10,4 +10,5 @@ namespace Runn\Framework;
  */
 class Exception extends \Runn\Core\Exception
 {
+
 }
