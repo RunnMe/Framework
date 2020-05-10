@@ -9,15 +9,14 @@ use Runn\Core\InstanceableByConfigInterface;
 use Runn\Core\SingletonInterface;
 use Runn\Core\SingletonTrait;
 use Runn\Di\ContainerInterface;
-use Runn\Routing\RouterInterface;
 
 /**
- * Default web-application class
+ * Default command line application class
  *
- * Class WebApplication
+ * Class CliApplication
  * @package Runn\Framework
  */
-class WebApplication implements ConfigAwareInterface, SingletonInterface, InstanceableByConfigInterface
+class CliApplication implements ConfigAwareInterface, SingletonInterface, InstanceableByConfigInterface
 {
 
     use ConfigAwareTrait;
@@ -29,11 +28,8 @@ class WebApplication implements ConfigAwareInterface, SingletonInterface, Instan
     /** @var ContainerInterface */
     protected /* @7.4 ContainerInterface */$container;
 
-    /** @var RouterInterface */
-    protected /* @7.4 RouterInterface */$router;
-
     /**
-     * WebApplication constructor.
+     * CliApplication constructor.
      *
      * @param Config $config
      * @throws Exception
@@ -80,17 +76,6 @@ class WebApplication implements ConfigAwareInterface, SingletonInterface, Instan
         if ($this->hasContainer() && !empty($this->config->providers)) {
             $this->initProviders($this->config->providers);
         }
-
-        if ($this->hasContainer() && $this->getContainer()->has(RouterInterface::class)) {
-            $this->router = $this->getContainer()->get(RouterInterface::class);
-        } else {
-            if ( !empty($this->config->router) && !empty($this->config->router->class) ) {
-                if (!is_subclass_of($this->config->router->class, RouterInterface::class)) {
-                    throw new Exception('Invalid router class: ' . $this->config->router->class);
-                }
-                $this->router = $this->initRouter($this->config->router);
-            }
-        }
     }
 
     /**
@@ -124,28 +109,6 @@ class WebApplication implements ConfigAwareInterface, SingletonInterface, Instan
     }
 
     /**
-     * Router initialization
-     *
-     * @param Config $config
-     * @return RouterInterface
-     */
-    protected function initRouter(Config $config): RouterInterface
-    {
-        $config = clone $config;
-        $class = $config->class;
-        $routes = $config->routes ?? [];
-        unset($config->class);
-        unset($config->routes);
-
-        /** @var RouterInterface $router */
-        $router = new $class($config);
-        if (!empty($routes) && is_iterable($routes)) {
-            $router->addRoutes($routes);
-        }
-        return $router;
-    }
-
-    /**
      * @return bool
      */
     public function hasContainer(): bool
@@ -159,22 +122,6 @@ class WebApplication implements ConfigAwareInterface, SingletonInterface, Instan
     public function getContainer(): ?ContainerInterface
     {
         return $this->hasContainer() ? $this->container : null;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasRouter(): bool
-    {
-        return !empty($this->router);
-    }
-
-    /**
-     * @return RouterInterface|null
-     */
-    public function getRouter(): ?RouterInterface
-    {
-        return $this->hasRouter() ? $this->router : null;
     }
 
     /**
